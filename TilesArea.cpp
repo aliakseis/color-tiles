@@ -5,6 +5,7 @@
 #include <QApplication>
 
 #include <time.h>
+#include <algorithm>
 
 enum
 {
