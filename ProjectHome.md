@@ -1,0 +1,2 @@
+"Reader Kenneth D Weinert pointed me to an interesting game with a board made of 14 x 14 colored squares. By changing the color of the top left hand corner to match those below or to the right, you buildup a bigger and bigger block of contiguous squares of the same color."
+http://cplus.about.com/od/programmingchallenges/a/challenge19.htm
