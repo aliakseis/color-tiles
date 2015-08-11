@@ -2,7 +2,7 @@
 
 #include "TilesArea.h"
 
-Tiles::Tiles(QWidget *parent, Qt::WFlags flags)
+Tiles::Tiles(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
 {
     ui.setupUi(this);

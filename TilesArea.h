@@ -4,6 +4,8 @@
 
 #include "solver.h"
 
+#include <memory>
+
 class TilesArea :
     public QWidget
 {

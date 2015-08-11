@@ -5,29 +5,12 @@
 TEMPLATE = app
 TARGET = Tiles
 DESTDIR = ../
-QT += core gui
+QT += core gui widgets
 CONFIG += release
 DEFINES += QT_LARGEFILE_SUPPORT QT_STATIC_BUILD
 INCLUDEPATH += ./GeneratedFiles \
     ./GeneratedFiles/Release \
     .
-LIBS += -lkernel32 \
-    -luser32 \
-    -lshell32 \
-    -luuid \
-    -lole32 \
-    -ladvapi32 \
-    -lws2_32 \
-    -lgdi32 \
-    -lcomdlg32 \
-    -loleaut32 \
-    -limm32 \
-    -lwinmm \
-    -lwinspool \
-    -lws2_32 \
-    -lole32 \
-    -luser32 \
-    -ladvapi32
 DEPENDPATH += .
 MOC_DIR += ./GeneratedFiles/release
 OBJECTS_DIR += release

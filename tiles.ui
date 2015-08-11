@@ -126,7 +126,7 @@
   <customwidget>
    <class>TilesArea</class>
    <extends>QWidget</extends>
-   <header>tilesarea.h</header>
+   <header>TilesArea.h</header>
   </customwidget>
  </customwidgets>
  <resources>
