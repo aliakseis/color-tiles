@@ -80,7 +80,7 @@ public:
 	class iterator
 	{
 	public:
-		iterator(const int* pData) : m_pData(pData), m_buffer(0), m_index(-1)
+		explicit iterator(const int* pData) : m_pData(pData), m_buffer(0), m_index(-1)
 		{
 			operator ++();
 		}
@@ -217,13 +217,12 @@ struct Item
 	}
 
 	IdSet neighbours[6];
-	int color;
-	int id;
+	const int color;
+	const int id;
 
 	void Link(Item* pOther)
 	{
 		assert(pOther != 0);
-		assert(pOther->color >= 0 && pOther->color < 6);
 		assert(pOther->color != color);
 		neighbours[pOther->color].insert(pOther->id);
 		pOther->neighbours[color].insert(id);
