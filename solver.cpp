@@ -6,6 +6,7 @@
 #include <string>
 #include <set>
 #include <algorithm>
+#include <memory>
 
 #include <assert.h>
 
@@ -18,16 +19,6 @@ using std::for_each;
 
 
 ///////////////////////////////////////////////////////////////
-
-struct Delete
-{
-	template<class T> void operator ()(T* pOb)
-	{
-		delete pOb;
-	}
-};
-
-
 
 
 unsigned int BSF(unsigned int v)
@@ -328,18 +319,17 @@ vector<int> DoSolve(Board& originalBoard, int numCourses)
 				if (originalBoard[i][j] == originalBoard[i][j - 1])
 				{
 					// merge
-					int p = indicesBoard[i - 1][j];
-					int q = indicesBoard[i][j - 1];
-					int i, j;
-					for (i = p; i != id[i]; i = id[i]) 
-                        id[i] = id[id[i]];
-                    for (j = q; j != id[j]; j = id[j])
-                        id[j] = id[id[j]];
-					if (i != j)
+                    int p = indicesBoard[i - 1][j];
+                    int q = indicesBoard[i][j - 1];
+                    for (; p != id[p]; p = id[p])
+                        id[p] = id[id[p]];
+                    for (; q != id[q]; q = id[q])
+                        id[q] = id[id[q]];
+                    if (p != q)
 					{
-						if (sz[i] < sz[j])
-						{ id[i] = j; sz[j] += sz[i]; }
-						else { id[j] = i; sz[i] += sz[j]; }
+                        if (sz[p] < sz[q])
+                        { id[p] = q; sz[q] += sz[p]; }
+                        else { id[q] = p; sz[p] += sz[q]; }
 					}
 				}
 				indicesBoard[i][j] = indicesBoard[i - 1][j];
@@ -456,7 +446,7 @@ vector<int> DoSolve(Board& originalBoard, int numCourses)
 
 				if (newItems.size() == areaIndex - nMerged)
 				{
-					for_each(items, items + areaIndex, Delete());
+                    for_each(items, items + areaIndex, std::default_delete<Item>());
 					vector<int> result = pCourse->moves;
 					result.push_back(nColor);
 					delete[] pCoursePool;
@@ -514,7 +504,7 @@ vector<int> DoSolve(Board& originalBoard, int numCourses)
 
 	delete[] hashTable;
 
-	for_each(items, items + areaIndex, Delete());
+    for_each(items, items + areaIndex, std::default_delete<Item>());
 	vector<int> result = (*courses.rbegin())->moves;
 	delete[] pCoursePool;
 	return result;
