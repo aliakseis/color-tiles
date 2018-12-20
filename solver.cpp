@@ -297,6 +297,7 @@ bool Find(Course* pOld, const IdSet& newItems)
 vector<int> DoSolve(Board& originalBoard, int numCourses)
 {
 	// extract contiguous areas
+    // https://github.com/caisah/Sedgewick-algorithms-in-c-exercises-and-examples/blob/master/01-introduction/examples/prog_1.3-path_compression_by_halving.c
 	int id[DIM * DIM];
 	int sz[DIM * DIM];
 	int indicesBoard[DIM][DIM];
@@ -335,9 +336,9 @@ vector<int> DoSolve(Board& originalBoard, int numCourses)
 					int q = indicesBoard[i][j - 1];
 					int i, j;
 					for (i = p; i != id[i]; i = id[i]) 
-						{ int t = i; i = id[id[t]]; id[t] = i; } 
-					for (j = q; j != id[j]; j = id[j]) ;
-						{ int t = j; j = id[id[t]]; id[t] = j; } 
+                        id[i] = id[id[i]];
+                    for (j = q; j != id[j]; j = id[j])
+                        id[j] = id[id[j]];
 					if (i != j)
 					{
 						if (sz[i] < sz[j])
