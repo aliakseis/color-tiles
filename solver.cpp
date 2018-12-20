@@ -12,7 +12,6 @@
 #include <memory.h>
 
 using std::string;
-using std::set;
 using std::vector;
 using std::for_each;
 
@@ -181,7 +180,7 @@ public:
 	}
 	iterator_end end()
 	{
-		return iterator_end();
+		return {};
 	}
 
 	unsigned int hash()
@@ -222,7 +221,7 @@ struct Item
 
 	void Link(Item* pOther)
 	{
-		assert(pOther != 0);
+		assert(pOther != nullptr);
 		assert(pOther->color != color);
 		neighbours[pOther->color].insert(pOther->id);
 		pOther->neighbours[color].insert(id);
@@ -246,10 +245,7 @@ public:
 	}
 	operator vector<int>() const
 	{
-		vector<int> result;
-		for (int i = 0; i < m_cnt; ++i)
-			result.push_back(m_moves[i]);
-		return result;
+        return { m_moves, m_moves + m_cnt };
 	}
 private:
 	int m_cnt;
@@ -274,7 +270,7 @@ struct IsCourseGreater
 	}
 };
 
-int GetRootId(int* indices, int id)
+int GetRootId(const int* indices, int id)
 {
 	while (indices[id] != id)
 		id = indices[id];
@@ -284,7 +280,7 @@ int GetRootId(int* indices, int id)
 bool Find(Course* pOld, const IdSet& newItems)
 {
 	for (
-		; pOld != 0
+		; pOld != nullptr
 		; pOld = pOld->pNext)
 	{
 		if (pOld->items == newItems)
@@ -358,7 +354,7 @@ vector<int> DoSolve(Board& originalBoard, int numCourses)
 
     assert(areaIndex <= 32 * 6);
 
-	Item* items[DIM * DIM] = {0};
+    Item* items[DIM * DIM] {};
 
 	Item* pRoot = new Item(originalBoard[0][0], GetRootId(id, 0));
 	items[GetRootId(id, 0)] = pRoot;
@@ -370,7 +366,7 @@ vector<int> DoSolve(Board& originalBoard, int numCourses)
 			if (originalBoard[i][j] != originalBoard[i][j - 1])
 			{
 				int idx = GetRootId(id, indicesBoard[i][j]);
-				if (0 == items[idx])
+				if (nullptr == items[idx])
 				{
 					items[idx] = new Item(originalBoard[i][j], idx);
 				}
@@ -382,7 +378,7 @@ vector<int> DoSolve(Board& originalBoard, int numCourses)
 			if (originalBoard[j][i] != originalBoard[j - 1][i])
 			{
 				int idx = GetRootId(id, indicesBoard[j][i]);
-				if (0 == items[idx])
+				if (nullptr == items[idx])
 				{
 					items[idx] = new Item(originalBoard[j][i], idx);
 				}
@@ -396,10 +392,10 @@ vector<int> DoSolve(Board& originalBoard, int numCourses)
 
 	for (int i = areaIndex; --i >= 0; )
 	{
-		assert((id[i] == i) == (items[i] != 0));
+		assert((id[i] == i) == (items[i] != nullptr));
 	}
 
-	Course* pCoursePool = new Course[numCourses * 2];
+	auto* pCoursePool = new Course[numCourses * 2];
 
 	vector<Course*> courses;
 
@@ -422,7 +418,7 @@ vector<int> DoSolve(Board& originalBoard, int numCourses)
 
 	const int hashSize = numCourses * 2 + 1;
 
-	Course** hashTable = new Course*[hashSize];
+	auto** hashTable = new Course*[hashSize];
 
 	for (int nMove = 0; nMove < 25; ++nMove)
 	{
@@ -430,11 +426,8 @@ vector<int> DoSolve(Board& originalBoard, int numCourses)
 
         vector<Course*> newCourses;
 		newCourses.reserve(numCourses);
-		for (vector<Course*>::iterator itCourse = courses.begin()
-			; itCourse != courses.end()
-			; ++itCourse)
+        for (const auto pCourse : courses)
 		{
-			Course* const pCourse = *itCourse;
 			const int lastColor = *(pCourse->moves.rbegin());
 
 			for (int nColor = 0; nColor < 6; ++nColor)
@@ -445,11 +438,9 @@ vector<int> DoSolve(Board& originalBoard, int numCourses)
 				IdSet actual(pCourse->items, pCourse->covered[nColor]);
 				IdSet newItems;
 				
-				for (IdSet::iterator it = actual.begin()
-					; it != actual.end()
-					; ++it)
+				for (int it : actual)
 				{
-					Item* pItem = items[*it];
+					Item* pItem = items[it];
 					assert(nColor != pItem->color);
 					newItems.insert(pItem->neighbours[nColor]);
 				}
@@ -493,7 +484,7 @@ vector<int> DoSolve(Board& originalBoard, int numCourses)
 					pop_heap(newCourses.begin(), newCourses.end(), IsCourseGreater());
 					assert(pNewCourse == *newCourses.rbegin());
 
-                    if (pNewCourse->pNext != 0)
+                    if (pNewCourse->pNext != nullptr)
                         pNewCourse->pNext->ppPrevNext = pNewCourse->ppPrevNext;
                     *pNewCourse->ppPrevNext = pNewCourse->pNext;
 
@@ -510,7 +501,7 @@ vector<int> DoSolve(Board& originalBoard, int numCourses)
 
                 pNewCourse->pNext = hashTable[hashIdx];
                 pNewCourse->ppPrevNext = &hashTable[hashIdx];
-                if (hashTable[hashIdx] != 0)
+                if (hashTable[hashIdx] != nullptr)
                     hashTable[hashIdx]->ppPrevNext = &pNewCourse->pNext;
                 hashTable[hashIdx] = pNewCourse;
 

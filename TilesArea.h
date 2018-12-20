@@ -43,7 +43,7 @@ protected:
 private:
     Board board;
     std::vector<int> solution;
-    std::auto_ptr<QTimer> timer;
+    std::unique_ptr<QTimer> timer;
 
     int currentStep;
 };

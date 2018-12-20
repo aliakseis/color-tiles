@@ -19,6 +19,7 @@ set(CMAKE_AUTOUIC ON)
 
 # Add a compiler flag
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+set(CMAKE_CXX_STANDARD 17)
 
 # Make this a GUI application on Windows
 if(WIN32)

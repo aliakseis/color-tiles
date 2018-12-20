@@ -6,6 +6,7 @@
 
 #include <time.h>
 #include <algorithm>
+#include <memory>
 
 enum
 {
@@ -33,13 +34,13 @@ TilesArea::TilesArea(QWidget *parent /*= 0*/)
 {
     // Seed the random-number generator with the current time so that
     // the numbers will be different every time we run.
-    srand( (unsigned)time( NULL ) );
+    srand( (unsigned)time( nullptr ) );
 
     random();
 }
 
 
-TilesArea::~TilesArea(void)
+TilesArea::~TilesArea()
 {
 }
 
@@ -163,7 +164,7 @@ void TilesArea::solve()
     solution.pop_back();
     if (!solution.empty())
     {
-        timer.reset(new QTimer(this));
+        timer = std::make_unique<QTimer>(this);
         connect(timer.get(), SIGNAL(timeout()), this, SLOT(step()));
         timer->start(1000);
     }
