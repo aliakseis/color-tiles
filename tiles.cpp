@@ -2,6 +2,8 @@
 
 #include "TilesArea.h"
 
+#include <QSettings>
+
 Tiles::Tiles(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
 {
@@ -26,4 +28,53 @@ void Tiles::onStep(int step)
     QString str;
     str.sprintf("Step: %d", step);
     statusBar()->showMessage(str);
+}
+
+// https://stackoverflow.com/questions/74690/how-do-i-store-the-window-size-between-sessions-in-qt
+void Tiles::writePositionSettings()
+{
+    QSettings qsettings( "noname", "Tiles" );
+
+    qsettings.beginGroup( "mainwindow" );
+
+    qsettings.setValue( "geometry", saveGeometry() );
+    qsettings.setValue( "savestate", saveState() );
+    qsettings.setValue( "maximized", isMaximized() );
+    if ( !isMaximized() ) {
+        qsettings.setValue( "pos", pos() );
+        qsettings.setValue( "size", size() );
+    }
+
+    qsettings.endGroup();
+}
+
+void Tiles::readPositionSettings()
+{
+    QSettings qsettings( "noname", "Tiles" );
+
+    qsettings.beginGroup( "mainwindow" );
+
+    restoreGeometry(qsettings.value( "geometry", saveGeometry() ).toByteArray());
+    restoreState(qsettings.value( "savestate", saveState() ).toByteArray());
+    move(qsettings.value( "pos", pos() ).toPoint());
+    resize(qsettings.value( "size", size() ).toSize());
+    if ( qsettings.value( "maximized", isMaximized() ).toBool() )
+        showMaximized();
+
+    qsettings.endGroup();
+}
+
+void Tiles::moveEvent(QMoveEvent*)
+{
+    writePositionSettings();
+}
+
+void Tiles::resizeEvent(QResizeEvent*)
+{
+    writePositionSettings();
+}
+
+void Tiles::closeEvent(QCloseEvent*)
+{
+    writePositionSettings();
 }
