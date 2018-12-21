@@ -14,11 +14,18 @@ public:
     Tiles(QWidget *parent = 0, Qt::WindowFlags flags = 0);
     ~Tiles();
 
+    void writePositionSettings();
+    void readPositionSettings();
+
 public slots:
     void onStep(int step);
 
 private:
     void createActions();
+
+    void moveEvent(QMoveEvent*) override;
+    void resizeEvent(QResizeEvent*) override;
+    void closeEvent(QCloseEvent*) override;
 
 private:
     Ui::TilesClass ui;
