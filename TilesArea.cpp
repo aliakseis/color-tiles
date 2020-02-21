@@ -16,7 +16,7 @@ enum
     clrYellow,
     clrAqua,
     clrPurple,
-} enmColors;
+};
 
 QColor colors[] =
 {
