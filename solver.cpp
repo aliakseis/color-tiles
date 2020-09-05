@@ -20,6 +20,7 @@ using std::for_each;
 
 ///////////////////////////////////////////////////////////////
 
+namespace {
 
 unsigned int BSF(unsigned int v)
 {
@@ -70,7 +71,8 @@ public:
 	class iterator
 	{
 	public:
-		explicit iterator(const int* pData) : m_pData(pData), m_buffer(0), m_index(-1)
+        explicit iterator(const int* pData)
+            : m_buffer(0), m_index(-1), m_pData(pData)
 		{
 			operator ++();
 		}
@@ -280,6 +282,7 @@ bool Find(Course* pOld, const IdSet& newItems)
 	return false;
 }
 
+} // namespace
 
 vector<int> DoSolve(Board& originalBoard, int numCourses)
 {
