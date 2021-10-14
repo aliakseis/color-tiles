@@ -8,5 +8,7 @@
     <file>Resources/purple.png</file>
     <file>Resources/yellow.png</file>
     <file>Resources/red.png</file>
+    <file>Resources/wait.gif</file>
+    <file>Resources/bad.gif</file>
   </qresource>
 </RCC>

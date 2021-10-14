@@ -3,6 +3,10 @@
 #include <QPainter>
 #include <QTimer>
 #include <QApplication>
+#include <QMessageBox>
+#include <QPixmap>
+#include <QLabel>
+#include <QMovie>
 
 #include <time.h>
 #include <algorithm>
@@ -118,7 +122,7 @@ void TilesArea::onPurple()
 }
 
 
-void TilesArea::onColor(int color)
+void TilesArea::onColor(int color, bool fromUser /*= true*/)
 {
     int prevColor = board[0][0];
     if (prevColor == color)
@@ -130,6 +134,27 @@ void TilesArea::onColor(int color)
 
     ++currentStep;
     emit onStep(currentStep);
+
+    enum { MAX_STEPS_NUMBER = 25 };
+    if (fromUser && currentStep >= MAX_STEPS_NUMBER && !isSolved())
+    {
+        // https://stackoverflow.com/a/50028443/10472202
+        QMessageBox msg;
+        // create Label
+        msg.setIconPixmap(QPixmap(":/Tiles/Resources/bad.gif").scaledToWidth(100));
+        auto icon_label = msg.findChild<QLabel*>("qt_msgboxex_icon_label");
+        auto movie = new QMovie(":/Tiles/Resources/bad.gif", {}, &msg);
+        // avoid garbage collector
+        //setattr(msg, 'icon_label', movie)
+        icon_label->setMovie(movie);
+        movie->start();
+
+        msg.setText(tr("Too bad."));
+        //msg.setWindowTitle(" ");
+        msg.setStandardButtons(QMessageBox::Ok);
+
+        msg.exec();
+    }
 }
 
 void TilesArea::doOnColor(int color, int prevColor, int i, int j)
@@ -146,6 +171,16 @@ void TilesArea::doOnColor(int color, int prevColor, int i, int j)
     doOnColor(color, prevColor, i, j + 1);
 }
 
+bool TilesArea::isSolved() const
+{
+    auto comparand = board[0][0];
+
+    for (auto& row : board)
+        for (auto v : row)
+            if (v != comparand)
+                return false;
+    return true;
+}
 
 void TilesArea::solve()
 {
@@ -169,7 +204,7 @@ void TilesArea::solve()
         timer->start(1000);
     }
 
-    onColor(color);
+    onColor(color, false);
 }
 
 void TilesArea::step()
@@ -181,7 +216,7 @@ void TilesArea::step()
         timer.reset();
     }
 
-    onColor(color);
+    onColor(color, false);
 }
 
 void TilesArea::stopReplay()

@@ -36,8 +36,9 @@ protected slots:
 protected:
     virtual void paintEvent(QPaintEvent *event) override;
 
-    void onColor(int color);
+    void onColor(int color, bool fromUser = true);
     void doOnColor(int color, int prevColor, int i, int j);
+    bool isSolved() const;
     void stopReplay();
 
 private:
