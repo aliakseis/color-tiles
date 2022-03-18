@@ -7,5 +7,5 @@ int main(int argc, char *argv[])
     Tiles w;
     w.readPositionSettings();
     w.show();
-    return a.exec();
+    return QApplication::exec();
 }

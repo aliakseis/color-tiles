@@ -66,7 +66,10 @@ if(MSVC)
 	set(CMAKE_INSTALL_OPENMP_LIBRARIES TRUE)
 	include (InstallRequiredSystemLibraries)
 
-	get_filename_component(QT_BIN_DIRECTORY ${QT_QMAKE_EXECUTABLE} DIRECTORY)
-	install(CODE "execute_process(COMMAND \"${QT_BIN_DIRECTORY}/windeployqt\"  \"${BINARY_FILE}\" WORKING_DIRECTORY \"${QT_BIN_DIRECTORY}\")")
-
+	if (QT_QMAKE_EXECUTABLE)
+		get_filename_component(QT_BIN_DIRECTORY ${QT_QMAKE_EXECUTABLE} DIRECTORY)
+		install(CODE "execute_process(COMMAND \"${QT_BIN_DIRECTORY}/windeployqt\"  \"${BINARY_FILE}\" WORKING_DIRECTORY \"${QT_BIN_DIRECTORY}\")")
+	else()
+		install(CODE "execute_process(COMMAND \"windeployqt\"  \"${BINARY_FILE}\" )")
+	endif()
 endif()

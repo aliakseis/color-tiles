@@ -8,7 +8,7 @@
 #include <QLabel>
 #include <QMovie>
 
-#include <time.h>
+#include <ctime>
 #include <algorithm>
 #include <memory>
 
@@ -38,15 +38,14 @@ TilesArea::TilesArea(QWidget *parent /*= 0*/)
 {
     // Seed the random-number generator with the current time so that
     // the numbers will be different every time we run.
-    srand( (unsigned)time( nullptr ) );
+    srand((unsigned)time(nullptr));
 
     random();
 }
 
 
 TilesArea::~TilesArea()
-{
-}
+= default;
 
 
 void TilesArea::paintEvent(QPaintEvent *event)
@@ -55,7 +54,7 @@ void TilesArea::paintEvent(QPaintEvent *event)
 
     QRect clientRect = rect();
 
-    for (int i = 0; i < DIM; ++i)
+    for (int i = 0; i < DIM; ++i) {
         for (int j = 0; j < DIM; ++j)
         {
             QRect rect;
@@ -69,15 +68,18 @@ void TilesArea::paintEvent(QPaintEvent *event)
             painter.setBrush(brush);
             painter.drawRect(rect);
         }
+    }
 }
 
 void TilesArea::random()
 {
     stopReplay();
 
-    for (int i = 0; i < DIM; ++i)
-        for (int j = 0; j < DIM; ++j)
-            board[i][j] = rand() % 6;
+    for (auto & i : board) {
+        for (int j = 0; j < DIM; ++j) {
+            i[j] = rand() % 6;
+        }
+    }
 
     currentStep = 0;
     emit onStep(0);
@@ -85,7 +87,7 @@ void TilesArea::random()
     update();
 }
 
-void TilesArea::onRed() 
+void TilesArea::onRed()
 {
     stopReplay();
     onColor(clrRed);
@@ -125,8 +127,9 @@ void TilesArea::onPurple()
 void TilesArea::onColor(int color, bool fromUser /*= true*/)
 {
     int prevColor = board[0][0];
-    if (prevColor == color)
+    if (prevColor == color) {
         return;
+    }
 
     doOnColor(color, prevColor, 0, 0);
 
@@ -160,8 +163,9 @@ void TilesArea::onColor(int color, bool fromUser /*= true*/)
 void TilesArea::doOnColor(int color, int prevColor, int i, int j)
 {
     if (i < 0 || i >= DIM || j < 0 || j >= DIM
-            || board[i][j] != prevColor)
+        || board[i][j] != prevColor) {
         return;
+    }
 
     board[i][j] = color;
 
@@ -175,10 +179,13 @@ bool TilesArea::isSolved() const
 {
     auto comparand = board[0][0];
 
-    for (auto& row : board)
-        for (auto v : row)
-            if (v != comparand)
+    for (auto& row : board) {
+        for (auto v : row) {
+            if (v != comparand) {
                 return false;
+            }
+        }
+    }
     return true;
 }
 
@@ -188,10 +195,11 @@ void TilesArea::solve()
 
     solution = DoSolve(board, 100000);//NUM_COURSES);
 
-    QApplication::restoreOverrideCursor();    
+    QApplication::restoreOverrideCursor();
 
-    if (solution.empty())
+    if (solution.empty()) {
         return;
+    }
 
     std::reverse(solution.begin(), solution.end());
 
