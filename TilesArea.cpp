@@ -24,10 +24,10 @@ enum
 
 QColor colors[] =
 {
-    QColor(255, 0, 0),
-    QColor(0, 255, 0),
+    QColor(237, 28, 36),
+    QColor(34, 177, 76),
     QColor(0, 0, 255),
-    QColor(255, 255, 0),
+    QColor(255, 242, 0),
     QColor(0, 255, 255),
     QColor(255, 0, 255),
 };
