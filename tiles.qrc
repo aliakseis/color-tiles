@@ -2,6 +2,7 @@
   <qresource prefix="Tiles">
     <file>Resources/random.png</file>
     <file>Resources/solve.png</file>
+    <file>Resources/undo.png</file>
     <file>Resources/aqua.png</file>
     <file>Resources/blue.png</file>
     <file>Resources/green.png</file>

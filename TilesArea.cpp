@@ -81,6 +81,8 @@ void TilesArea::random()
         }
     }
 
+    initialBoard = board;
+
     currentStep = 0;
     emit onStep(0);
 
@@ -213,6 +215,18 @@ void TilesArea::solve()
     }
 
     onColor(color, false);
+}
+
+void TilesArea::undo()
+{
+    stopReplay();
+
+    board = initialBoard;
+
+    currentStep = 0;
+    emit onStep(0);
+
+    update();
 }
 
 void TilesArea::step()

@@ -29,6 +29,7 @@ public slots:
 
     void random();
     void solve();
+    void undo();
 
 protected slots:
     void step();
@@ -43,6 +44,7 @@ protected:
 
 private:
     Board board;
+    Board initialBoard;
     std::vector<int> solution;
     std::unique_ptr<QTimer> timer;
 
