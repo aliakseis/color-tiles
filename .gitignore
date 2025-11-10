@@ -220,3 +220,5 @@ ipch/
 *.exe
 
 GeneratedFiles/
+
+.vs/

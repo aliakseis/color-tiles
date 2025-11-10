@@ -15,7 +15,7 @@ if(WIN32)
 endif()
 
 # Prefer Qt6 if available, otherwise fall back to Qt5
-find_package(Qt6 COMPONENTS Widgets REQUIRED QUIET)
+find_package(Qt6 COMPONENTS Widgets QUIET)
 if(NOT Qt6_FOUND)
   find_package(Qt5 COMPONENTS Widgets REQUIRED)
   set(USE_QT5 TRUE)

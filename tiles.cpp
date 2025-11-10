@@ -24,9 +24,7 @@ void Tiles::createActions()
 
 void Tiles::onStep(int step)
 {
-    QString str;
-    str.sprintf("Step: %d", step);
-    statusBar()->showMessage(str);
+    statusBar()->showMessage(QString("Step: %1").arg(step));
 }
 
 // https://stackoverflow.com/questions/74690/how-do-i-store-the-window-size-between-sessions-in-qt
