@@ -222,3 +222,5 @@ ipch/
 GeneratedFiles/
 
 .vs/
+
+CMake*.json
