@@ -1,5 +1,7 @@
 #include "TilesArea.h"
 
+#include "retro_synth.h"
+
 #include <QPainter>
 #include <QTimer>
 #include <QApplication>
@@ -143,6 +145,9 @@ void TilesArea::onColor(int color, bool fromUser /*= true*/)
     enum { MAX_STEPS_NUMBER = 25 };
     if (fromUser && currentStep >= MAX_STEPS_NUMBER && !isSolved())
     {
+        static RetroSynth synth;
+        synth.start();
+
         // https://stackoverflow.com/a/50028443/10472202
         QMessageBox msg;
         // create Label
@@ -159,6 +164,8 @@ void TilesArea::onColor(int color, bool fromUser /*= true*/)
         msg.setStandardButtons(QMessageBox::Ok);
 
         msg.exec();
+
+        synth.stop();
     }
 }
 

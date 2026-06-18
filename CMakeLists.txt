@@ -15,9 +15,9 @@ if(WIN32)
 endif()
 
 # Prefer Qt6 if available, otherwise fall back to Qt5
-find_package(Qt6 COMPONENTS Widgets QUIET)
+find_package(Qt6 COMPONENTS Widgets Multimedia QUIET)
 if(NOT Qt6_FOUND)
-  find_package(Qt5 COMPONENTS Widgets REQUIRED)
+  find_package(Qt5 COMPONENTS Widgets Multimedia REQUIRED)
   set(USE_QT5 TRUE)
 endif()
 
@@ -33,14 +33,15 @@ add_executable(Tiles
   tiles.cpp
   solver.cpp
   TilesArea.cpp
+  retro_synth.cpp
   tiles.ui
   ${QRCS}
 )
 
 if(USE_QT5)
-  target_link_libraries(Tiles PRIVATE Qt5::Widgets)
+  target_link_libraries(Tiles PRIVATE Qt5::Widgets Qt5::Multimedia)
 else()
-  target_link_libraries(Tiles PRIVATE Qt6::Widgets)
+  target_link_libraries(Tiles PRIVATE Qt6::Widgets Qt6::Multimedia)
 endif()
 
 # Windows packaging left mostly unchanged
