@@ -1,6 +1,8 @@
 # color-tiles
 ![bad](https://github.com/aliakseis/color-tiles/assets/11851670/d6879995-b862-4457-806f-699fbf4ccbc0)
 
+# "A party descends into an existential nightmare!"
+
 # Tile Flood Puzzle Solver
 
 A high-performance C++ solver for **color flood / tile conquest puzzles**. The algorithm analyzes a colored grid, compresses connected regions into a graph, and searches for an optimal or near-optimal sequence of color changes required to capture the entire board.
